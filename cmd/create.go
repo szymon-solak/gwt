@@ -10,11 +10,12 @@ import (
 )
 
 var createCmd = &cobra.Command{
-	Use:     "create <branch> [base-branch]",
-	Aliases: []string{"add"},
-	Short:   "Create a new branch with a worktree",
-	Long:    "Create a new branch and worktree in branches/<branch> directory",
-	Args:    cobra.RangeArgs(1, 2),
+	Use:               "create <branch> [base-branch]",
+	Aliases:           []string{"add"},
+	Short:             "Create a new branch with a worktree",
+	Long:              "Create a new branch and worktree in branches/<branch> directory",
+	Args:              cobra.RangeArgs(1, 2),
+	ValidArgsFunction: createCompletion,
 	Run: func(cmd *cobra.Command, args []string) {
 		branch := args[0]
 		path := filepath.Join("branches", branch)

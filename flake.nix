@@ -28,6 +28,15 @@
 
         ldflags = [ "-s" "-w" ];
 
+        postInstall = ''
+          installShellCompletion --cmd gwt \
+            --bash <($out/bin/gwt completion bash) \
+            --fish <($out/bin/gwt completion fish) \
+            --zsh <($out/bin/gwt completion zsh)
+        '';
+
+        nativeBuildInputs = [ pkgs.installShellFiles ];
+
         meta = with pkgs.lib; {
           description = "Simplified git worktree management";
           homepage = "https://github.com/szymon-solak/gwt";
