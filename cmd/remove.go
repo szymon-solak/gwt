@@ -20,7 +20,16 @@ var removeCmd = &cobra.Command{
 		branch := args[0]
 		path := filepath.Join("branches", branch)
 
-		gitCmd := exec.Command("git", "worktree", "remove", path)
+		cmdArgs := []string{"worktree", "remove"}
+
+		force, _ := cmd.Flags().GetBool("force")
+		if force {
+			cmdArgs = append(cmdArgs, "--force")
+		}
+
+		cmdArgs = append(cmdArgs, path)
+
+		gitCmd := exec.Command("git", cmdArgs...)
 		gitCmd.Stdout = os.Stdout
 		gitCmd.Stderr = os.Stderr
 
@@ -35,4 +44,5 @@ var removeCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(removeCmd)
+	removeCmd.Flags().BoolP("force", "f", false, "Force removal even if worktree is dirty or locked")
 }
