@@ -18,7 +18,8 @@ var checkoutCmd = &cobra.Command{
 	ValidArgsFunction: branchCompletion,
 	Run: func(cmd *cobra.Command, args []string) {
 		branch := args[0]
-		path := filepath.Join("branches", branch)
+		dirName := sanitizeBranchName(branch)
+		path := filepath.Join("branches", dirName)
 
 		gitCmd := exec.Command("git", "worktree", "add", path, branch)
 		gitCmd.Stdout = os.Stdout
