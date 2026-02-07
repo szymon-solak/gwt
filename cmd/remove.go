@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
-	"path/filepath"
 
 	"github.com/spf13/cobra"
 )
@@ -18,7 +17,7 @@ var removeCmd = &cobra.Command{
 	ValidArgsFunction: worktreeDirCompletion,
 	Run: func(cmd *cobra.Command, args []string) {
 		branch := args[0]
-		path := filepath.Join("branches", branch)
+		path := getWorktreePath(branch)
 
 		cmdArgs := []string{"worktree", "remove"}
 

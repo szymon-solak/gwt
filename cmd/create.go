@@ -18,8 +18,7 @@ var createCmd = &cobra.Command{
 	ValidArgsFunction: createCompletion,
 	Run: func(cmd *cobra.Command, args []string) {
 		branch := args[0]
-		dirName := sanitizeBranchName(branch)
-		path := filepath.Join("branches", dirName)
+		path := getWorktreePath(branch)
 
 		gitArgs := []string{"worktree", "add", "-b", branch, path}
 		if len(args) == 2 {
