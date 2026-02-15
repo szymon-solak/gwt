@@ -39,6 +39,13 @@ var initCmd = &cobra.Command{
 		}
 
 		absPath, _ := filepath.Abs(dest)
+
+		// Configure fetch refspec for remote tracking
+		configPath := filepath.Join(absPath, "config")
+		configCmd := exec.Command("git", "config", "--file", configPath, "remote.origin.fetch", "+refs/heads/*:refs/remotes/origin/*")
+		if err := configCmd.Run(); err != nil {
+			fmt.Fprintf(os.Stderr, "Warning: failed to configure fetch refspec: %v\n", err)
+		}
 		fmt.Printf("\nBare repository created at: %s\n", absPath)
 	},
 }
