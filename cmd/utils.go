@@ -22,12 +22,14 @@ func formatBranchName(branch string) string {
 func getWorktreePath(branch string) string {
 	dirName := formatBranchName(branch)
 
-	cmd := exec.Command("git", "rev-parse", "--show-toplevel")
+	cmd := exec.Command("git", "worktree", "list", "--porcelain")
 	output, err := cmd.Output()
 	if err != nil {
 		return filepath.Join("branches", dirName)
 	}
 
-	gitRoot := strings.TrimSpace(string(output))
-	return filepath.Join(gitRoot, "branches", dirName)
+	// First line is always "worktree <path>" for the main/bare repo
+	firstLine := strings.SplitN(strings.TrimSpace(string(output)), "\n", 2)[0]
+	mainRoot := strings.TrimPrefix(firstLine, "worktree ")
+	return filepath.Join(mainRoot, "branches", dirName)
 }
